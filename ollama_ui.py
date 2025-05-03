@@ -9,7 +9,6 @@ if st.button("ارسال"):
     if user_input.strip() == "":
         st.warning("لطفا یک پیام وارد کنید!")
     else:
-        # فرض کنیم سرویس ollama روی localhost و پورت 12345 فعال است
         url = "http://localhost:12345/api/generate"  # این آدرس را با توجه به api backend خودت تنظیم کن
         payload = {'message': user_input}
         try:
