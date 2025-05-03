@@ -1,21 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                echo 'Building Docker Image...'
-                sh '''
-                docker build -t ollama_ui .
-                '''
+                sh 'docker build -t ollama_ui .'
             }
         }
-        stage('Run Docker Container') {
+        stage('Run') {
             steps {
-                echo 'Running Docker Container...'
-                sh '''
-                docker rm -f ollama_ui_container || true
-                docker run -d -p 8500:8500 --name ollama_ui_container ollama_ui
-                '''
+                sh 'docker rm -f ollama_ui_container || true'
+                sh 'docker run -d -p 8500:8500 --name ollama_ui_container ollama_ui'
             }
         }
     }
