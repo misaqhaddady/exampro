@@ -1,15 +1,25 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Clone') {
             steps {
-                sh 'docker build -t ollama_ui .'
+                git 'https://github.com/misaqhaddady/exampro.git'
             }
         }
-        stage('Run') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker rm -f ollama_ui_container || true'
-                sh 'docker run -d -p 8500:8500 --name ollama_ui_container ollama_ui'
+                script {
+                    dockerImage = docker.build("ollama_ui_image")
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Try to stop/remove previous container if running
+                    sh 'docker rm -f ollama_ui_container || true'
+                    sh 'docker run -d --name ollama_ui_container -p 8500:8500 ollama_ui_image'
+                }
             }
         }
     }
